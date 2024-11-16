@@ -14,13 +14,27 @@
     </div>
     <!-- Boxes first in DOM order -->
     <div class="boxes-container">
-      <div class="box box-left">Tools</div>
-      <div class="box box-right" @click="toggleNFTs">
+      <div class="box box-left" 
+           @click="handleBoxClick"
+           :class="{ 'discover-fly-away': isLeaving }">
+        Discover
+      </div>
+      <div class="box box-right" 
+           @click="toggleNFTs"
+           :class="{ 'box-fly-away': isLeaving }">
         <div class="nft-background"></div>
         <span class="box-text">NFTs</span>
       </div>
-      <div class="box box-top" @click="toggleMenu">Quick Menu</div>
-      <div class="box box-bottom" @click="toggleWarp">$WARP</div>
+      <div class="box box-top" 
+           @click="toggleMenu"
+           :class="{ 'box-fly-away': isLeaving }">
+        Quick Tools
+      </div>
+      <div class="box box-bottom" 
+           @click="toggleWarp"
+           :class="{ 'box-fly-away': isLeaving }">
+        $WARP
+      </div>
     </div>
     <!-- Text last, so it's on top -->
     <div class="text-background">TREK</div>
@@ -71,34 +85,74 @@
         <span class="tooltip">DragonSwap</span>
       </div>
     </div>
+
+    <!-- New Discover Menu -->
+    <div class="new-discover-menu" :class="{ 'menu-slide-in': discoverOpen }">
+      <div class="menu-item">WHAT IS TREK</div>
+      <div class="menu-item">TOKENOMICS</div>
+      <div class="menu-item">ROADMAP</div>
+      <div class="menu-item">TEAM</div>
+    </div>
+
+    <!-- New Back Button -->
+    <div class="back-button" 
+         :class="{ 'back-slide-in': discoverOpen }"
+         @click="toggleDiscover">
+      &lt; Back
+    </div>
+
+    <!-- New Content Box -->
+    <div class="discover-content" :class="{ 'content-fade-in': discoverOpen }">
+      <h2>Welcome to Trek</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
   </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
+
 export default {
   name: 'TrekHome',
+  setup() {
+    const router = useRouter()
+    
+    const goToAbout = () => {
+      router.push('/about')
+    }
+
+    return {
+      goToAbout
+    }
+  },
   data() {
     return {
       menuOpen: false,
       nftOpen: false,
-      warpOpen: false
+      warpOpen: false,
+      discoverOpen: false,
+      isLeaving: false
     }
   },
   methods: {
     toggleMenu() {
-      this.menuOpen = !this.menuOpen;
+      this.menuOpen = !this.menuOpen
     },
     toggleNFTs() {
-      this.nftOpen = !this.nftOpen;
+      this.nftOpen = !this.nftOpen
     },
     toggleWarp() {
-      this.warpOpen = !this.warpOpen;
+      this.warpOpen = !this.warpOpen
     },
     handleImageError(e) {
-      console.error('Image failed to load:', e.target.src);
+      console.error('Image failed to load:', e.target.src)
     },
     openLink(url) {
-      window.open(url, '_blank', 'noopener,noreferrer');
+      window.open(url, '_blank', 'noopener,noreferrer')
+    },
+    handleBoxClick() {
+      this.isLeaving = true;
     }
   }
 }
@@ -121,31 +175,43 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .text-background {
   font-family: 'Antonio', sans-serif;
-  font-size: 20vw; /* Responsive font size */
+  font-size: 20vw;
   font-weight: 700;
-  color: cyan;
   text-align: center;
   letter-spacing: 0.1em;
-  animation: glow 2s ease-in-out infinite alternate;
-  z-index: 20; /* Higher than boxes */
+  z-index: 20;
   position: relative;
+  animation: textColorRotate 30s ease-in-out infinite;
+  text-shadow: 0 0 20px currentColor;
+  opacity: 0.9;
 }
 
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px cyan,
-                 0 0 20px cyan,
-                 0 0 30px cyan;
+@keyframes textColorRotate {
+  0% {
+    color: rgb(8, 193, 226);
   }
-  to {
-    text-shadow: 0 0 20px cyan,
-                 0 0 30px cyan,
-                 0 0 40px cyan,
-                 0 0 50px cyan;
+  16% {
+    color: rgba(128, 0, 128, 1);
+  }
+  33% {
+    color: rgb(230, 200, 35);
+  }
+  50% {
+    color: rgba(255, 0, 0, 1);
+  }
+  66% {
+    color: rgb(230, 200, 35);
+  }
+  84% {
+    color: rgba(128, 0, 128, 1);
+  }
+  100% {
+    color: rgb(8, 193, 226);
   }
 }
 
@@ -160,19 +226,21 @@ export default {
 
 .line {
   position: absolute;
-  width: 3px;
+  width: 1px;
   height: 100%;
   left: 50%;
-  background: cyan;
   opacity: 0.2;
   transform-origin: 50% 50%;
-  animation: moveLine 4s infinite;
+  animation: 
+    moveLine 3s infinite,
+    lineColorRotate 30s ease-in-out infinite;
+  box-shadow: 0 0 20px currentColor;
 }
 
 @keyframes moveLine {
   0% {
     transform-origin: 50% 50%;
-    scale: 2;
+    scale: 1;
     opacity: 0;
   }
   50% {
@@ -182,6 +250,30 @@ export default {
     transform-origin: 50% 50%;
     scale: 0;
     opacity: 0;
+  }
+}
+
+@keyframes lineColorRotate {
+  0% {
+    color: rgb(8, 193, 226);
+  }
+  16% {
+    color: rgba(128, 0, 128, 1);
+  }
+  33% {
+    color: rgb(230, 200, 35);
+  }
+  50% {
+    color: rgba(255, 0, 0, 1);
+  }
+  66% {
+    color: rgb(230, 200, 35);
+  }
+  84% {
+    color: rgba(128, 0, 128, 1);
+  }
+  100% {
+    color: rgb(8, 193, 226);
   }
 }
 
@@ -317,8 +409,8 @@ export default {
 .menu-item {
   color: cyan;
   font-family: 'Antonio', sans-serif;
-  font-size: 1.5em;
-  margin: 15px 0;
+  font-size: 24px; /* Increased font size */
+  margin: 20px 0; /* Increased spacing between items */
   cursor: pointer;
   transition: color 0.3s ease;
   opacity: 0;
@@ -497,5 +589,151 @@ export default {
 .nft-item:hover .tooltip::after,
 .warp-item:hover .tooltip::after {
   border-top-color: gold;
+}
+
+.box-fly-away {
+  animation: flyAway 0.5s forwards !important;
+}
+
+@keyframes flyAway {
+  to {
+    transform: translate(100vw, -100vh) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.discover-active {
+  animation: moveToTop 0.5s 0.5s forwards !important;
+}
+
+@keyframes moveToTop {
+  to {
+    transform: translate(calc(-50vw + 150px), -40vh) !important;
+  }
+}
+
+.new-discover-menu {
+  position: fixed;
+  left: -300px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid cyan;
+  color: cyan;
+  padding: 30px;
+  transition: all 0.5s ease 0.8s;
+  opacity: 0;
+  z-index: 30;
+  width: 250px;
+  display: block;
+  visibility: visible;
+}
+
+.menu-slide-in {
+  left: 50px;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.new-discover-menu .menu-item {
+  display: block;
+  color: cyan !important;
+  font-family: 'Antonio', sans-serif;
+  font-size: 28px;
+  margin: 25px 0;
+  cursor: pointer;
+  background: transparent;
+  transition: color 0.3s ease;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+  z-index: 31;
+}
+
+.new-discover-menu .menu-item:hover {
+  color: gold;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.discover-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid cyan;
+  padding: 30px;
+  color: cyan;
+  font-family: 'Antonio', sans-serif;
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 25;
+}
+
+.content-fade-in {
+  opacity: 1;
+  transition-delay: 1.1s;
+}
+
+.discover-content h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: cyan;
+}
+
+.discover-content p {
+  margin-bottom: 15px;
+  line-height: 1.5;
+  color: cyan;
+}
+
+.back-button {
+  position: fixed;
+  right: -300px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid cyan;
+  padding: 20px;
+  width: 200px;
+  color: cyan;
+  font-family: 'Antonio', sans-serif;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  opacity: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-slide-in {
+  right: 50px;
+  opacity: 1;
+  transition-delay: 0.6s;
+}
+
+.back-button:hover {
+  color: gold;
+  border-color: gold;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+.discover-fly-away {
+  animation: discoverFlyAway 0.5s forwards !important;
+}
+
+@keyframes discoverFlyAway {
+  to {
+    transform: translate(-100vw, -100vh) rotate(-45deg);
+    opacity: 0;
+  }
 }
 </style>
