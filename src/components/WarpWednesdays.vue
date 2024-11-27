@@ -1,6 +1,15 @@
 <template>
   <div class="warp-wednesdays-container">
-    <!-- Content sections -->
+    <!-- Make GB clickable -->
+    <div class="gb-container">
+      <a href="https://dragonswap.app/swap?inputCurrency=SEI&outputCurrency=0xd78BE621436e69C81E4d0e9f29bE14C5EC51E6Ae" 
+         target="_blank" 
+         rel="noopener noreferrer">
+        <img src="@/assets/gb.png" alt="GB" class="floating-gb">
+      </a>
+    </div>
+    
+    <!-- Existing content -->
     <div class="content-container">
       <div class="section">
         <h2>Warp Wednesdays</h2>
@@ -108,6 +117,7 @@ export default {
   padding: 40px;
   background: #ff9c00;
   border-radius: 40px;
+  z-index: 2;
 }
 
 .section h2 {
@@ -222,5 +232,36 @@ export default {
 
 html {
   scroll-behavior: smooth;
+}
+
+.gb-container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.floating-gb {
+  position: absolute;
+  width: 100px;
+  height: auto;
+  animation: floatGB 20s linear infinite;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.floating-gb:hover {
+  opacity: 1;
+}
+
+@keyframes floatGB {
+  from {
+    transform: translate(100vw, -100px) rotate(0deg);
+  }
+  to {
+    transform: translate(-100px, 100vh) rotate(720deg);
+  }
 }
 </style> 
