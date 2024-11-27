@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TrekHome from '../components/TrekHome.vue'
-import AboutTrek from '@/views/AboutTrek.vue'
+import AboutTrek from '@/components/AboutTrek.vue'
 
 const routes = [
   {

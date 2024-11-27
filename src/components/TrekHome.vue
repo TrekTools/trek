@@ -1,14 +1,16 @@
 <template>
   <div class="background-container">
-    <div class="lines-container">
-      <!-- Create multiple lines -->
-      <div v-for="n in 20" :key="n" 
-           class="line"
+    <div class="stars-container">
+      <!-- Create multiple stars -->
+      <div v-for="n in 200" :key="n" 
+           class="star"
            :style="{ 
-             animationDelay: `${n * 0.2}s`,
-             transform: `rotate(${n * 18}deg)`,
-             width: `${1 + Math.random() * 20}px`,
-             opacity: `${0.1 + Math.random() * 0.15}`
+             left: `${Math.random() * 100}%`,
+             top: `${Math.random() * 100}%`,
+             animationDelay: `${Math.random() * 3}s`,
+             width: `${1 + Math.random() * 2}px`,
+             height: `${1 + Math.random() * 2}px`,
+             animationDuration: `${1 + Math.random() * 3}s`
            }">
       </div>
     </div>
@@ -212,70 +214,6 @@ export default {
   }
   100% {
     color: rgb(8, 193, 226);
-  }
-}
-
-.lines-container {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-}
-
-.line {
-  position: absolute;
-  width: 1px;
-  height: 200vh;
-  left: 48%;
-  top: -48%;
-  opacity: 0.2;
-  transform-origin: center;
-  animation: 
-    moveLine 4s infinite,
-    lineColorRotate 30s ease-in-out infinite;
-  box-shadow: 0 0 20px currentColor;
-}
-
-@keyframes moveLine {
-  0% {
-    transform-origin: center;
-    scale: 2;
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.2;
-  }
-  100% {
-    transform-origin: center;
-    scale: 0;
-    opacity: 0;
-  }
-}
-
-@keyframes lineColorRotate {
-  0% {
-    background-color: rgb(8, 193, 226);
-  }
-  16% {
-    background-color: rgba(128, 0, 128, 1);
-  }
-  33% {
-    background-color: rgb(230, 200, 35);
-  }
-  50% {
-    background-color: rgba(255, 0, 0, 1);
-  }
-  66% {
-    background-color: rgb(230, 200, 35);
-  }
-  84% {
-    background-color: rgba(128, 0, 128, 1);
-  }
-  100% {
-    background-color: rgb(8, 193, 226);
   }
 }
 
@@ -761,5 +699,38 @@ export default {
   color: gold;
   border-color: gold;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+/* Add new star styles */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  background: cyan;
+  border-radius: 50%;
+  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
+  animation: twinkle linear infinite;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
 }
 </style>

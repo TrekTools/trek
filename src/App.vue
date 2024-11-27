@@ -1,14 +1,16 @@
 <template>
   <div class="background-container">
-    <div class="lines-container">
-      <!-- Create multiple lines -->
-      <div v-for="n in 20" :key="n" 
-           class="line"
+    <div class="stars-container">
+      <!-- Create multiple stars -->
+      <div v-for="n in 200" :key="n" 
+           class="star"
            :style="{ 
-             animationDelay: `${n * 0.2}s`,
-             transform: `rotate(${n * 18}deg)`,
-             width: `${1 + Math.random() * 20}px`,
-             opacity: `${0.1 + Math.random() * 0.15}`
+             left: `${Math.random() * 100}%`,
+             top: `${Math.random() * 100}%`,
+             animationDelay: `${Math.random() * 3}s`,
+             width: `${1 + Math.random() * 2}px`,
+             height: `${1 + Math.random() * 2}px`,
+             animationDuration: `${1 + Math.random() * 3}s`
            }">
       </div>
     </div>
@@ -40,39 +42,35 @@ export default {
   overflow: hidden;
 }
 
-.lines-container {
+.stars-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1;
-  overflow: hidden;
 }
 
-.line {
+.star {
   position: absolute;
-  left: calc(50% - 1px);
-  height: 100vh;
   background: cyan;
-  transform-origin: top;
-  animation: lineMove 3s ease-in-out infinite;
+  border-radius: 50%;
+  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
+  animation: twinkle linear infinite;
 }
 
-@keyframes lineMove {
+@keyframes twinkle {
   0% {
-    transform: rotate(var(--rotation)) translateY(-50vh);
-    opacity: 0.1;
+    opacity: 0.2;
+    transform: scale(0.8);
   }
   50% {
-    opacity: 0.3;
+    opacity: 1;
+    transform: scale(1.2);
   }
   100% {
-    transform: rotate(var(--rotation)) translateY(50vh);
-    opacity: 0.1;
+    opacity: 0.2;
+    transform: scale(0.8);
   }
 }
 
