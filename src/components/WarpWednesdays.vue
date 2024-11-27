@@ -1,93 +1,127 @@
 <template>
-  <div class="warp-wednesdays-container">
-    <!-- Make GB clickable -->
-    <div class="gb-container">
-      <a href="https://dragonswap.app/swap?inputCurrency=SEI&outputCurrency=0xd78BE621436e69C81E4d0e9f29bE14C5EC51E6Ae" 
-         target="_blank" 
-         rel="noopener noreferrer">
-        <img src="@/assets/gb.png" alt="GB" class="floating-gb">
-      </a>
-    </div>
-    
-    <!-- Existing content -->
-    <div class="content-container">
-      <div class="section">
-        <h2>Warp Wednesdays</h2>
-        <div class="section-content">
-          <div v-for="(post, index) in blogPosts" 
-               :key="index"
-               class="blog-post">
-            <h3>{{ post.title }}</h3>
-            <div class="post-date">{{ post.date }}</div>
-            <div class="dashboard-media">
-              <video v-if="post.type === 'video'" 
-                     controls 
-                     class="dashboard-video">
-                <source :src="post.video" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-              <img v-else 
-                   :src="post.image" 
-                   :alt="post.title">
+  <ClientOnly>
+    <div class="warp-wednesdays-container" v-if="isReady">
+      <!-- GB animation -->
+      <div class="gb-container">
+        <a href="https://dragonswap.app/swap?inputCurrency=SEI&outputCurrency=0xd78BE621436e69C81E4d0e9f29bE14C5EC51E6Ae" 
+           target="_blank" 
+           rel="noopener noreferrer">
+          <img src="@/assets/gb.png" alt="GB" class="floating-gb" :class="`gb-direction-${gbDirection}`">
+        </a>
+      </div>
+      
+      <!-- Back button -->
+      <div class="back-button" @click="goBack">
+        &lt; Back to Home
+      </div>
+      
+      <!-- Content container -->
+      <div class="content-container">
+        <div class="section">
+          <h2>Warp Wednesdays</h2>
+          <div class="section-content">
+            <div v-for="(post, index) in blogPosts" 
+                 :key="index"
+                 class="blog-post">
+              <h3>{{ post.title }}</h3>
+              <div class="post-date">{{ post.date }}</div>
+              <div class="dashboard-media">
+                <video v-if="post.type === 'video'" 
+                       controls 
+                       class="dashboard-video">
+                  <source :src="post.video" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <img v-else 
+                     :src="post.image" 
+                     :alt="post.title">
+              </div>
+              <div class="post-content" v-html="post.content"></div>
             </div>
-            <div class="post-content">{{ post.content }}</div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Back button -->
-    <div class="back-button" @click="goBack">
-      &lt; Back to Home
-    </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'WarpWednesdays',
   setup() {
     const router = useRouter()
-    
-    const blogPosts = [
+    const isReady = ref(false)
+    const gbDirection = ref(0)
+    const blogPosts = ref([
       {
         title: "Announcing Warp Wednesdays!",
-        date: "2024-03-20",
+        date: "2024-11-7",
         content: "We're thrilled to announce a new chapter in our journey as the Warp Bois Discord evolves into the TREK Discord! Starting today, every Wednesday we'll be bringing you comprehensive updates on everything happening in our ecosystem. Warp Wednesdays will feature the latest TREK news, exciting community competitions, detailed Sei network analysis, NFT market insights, meme coin trends, and much more. Join us weekly as we explore the frontiers of the Sei ecosystem and build our community together. This is just the beginning of our mission to create the most engaging and informative platform for all things Sei!",
         image: require('@/assets/warpw1.jpeg'),
         type: 'image'
       },
       {
+        title: "WARP BOIS Evolution: Introducing TREK",
+        date: "2024-11-27",
+        content: "Today marks an exciting evolution in our journey as we rebrand our Discord server from WARP BOIS to TREK. This change reflects the growth and expansion of our ecosystem, while honoring our roots. The WARP BOIS aren't going anywhere - they remain an integral part of TREK's future and identity. This rebranding better captures the full scope of what we've built together: from NFTs to DeFi, from community tools to market analytics. TREK represents our mission to explore new frontiers in the Sei ecosystem, with the WARP BOIS leading the charge. Join us as we embark on this next chapter of our adventure! <a href='https://discord.gg/K9vUgVxm3W' target='_blank' rel='noopener noreferrer' class='discord-link'>Come check out the Discord here!</a>",
+        image: require('@/assets/IMG_5430.jpg'),
+        type: 'image'
+      },
+      {
         title: "Tanker Bot Returns to Discord",
-        date: "2024-03-20",
+        date: "2024-11-27",
         content: "We're excited to announce that Tanker has returned to Discord with enhanced capabilities! Our beloved bot now tracks coin prices and NFT market data in real-time. Simply tag Tanker in your Discord server to access market analytics, price alerts, and trading volumes. Stay tuned for upcoming features including customizable alerts, trading pair analytics, and advanced NFT floor price tracking. Tanker is evolving to become your all-in-one Discord companion for the Sei ecosystem.",
         video: require('@/assets/tankerback.mp4'),
         type: 'video'
       },
       {
+        title: "$GONAD Skyrockets Overnight!",
+        date: "2024-11-27",
+        content: "In an explosive turn of events, $GONAD has seen a massive green candle overnight, catching the attention of traders and enthusiasts across the Sei ecosystem as part of Meme Coin Madness. This unprecedented surge has solidified $GONAD's position as one of the most exciting meme coins in the space. While the exact catalyst was one major whale showing conviction, it's clear that the community's enthusiasm and the overall bullish sentiment in the Sei market have played significant roles. As always, we remind our community to trade responsibly and do their own research. Stay tuned for more updates on this developing story!",
+        image: require('@/assets/green_candle.png'),
+        type: 'image'
+      },
+      {
         title: "Sei Network Growth Dashboard",
-        date: "2024-03-20",
-        content: "Our latest network activity dashboard showcases Sei's remarkable growth trajectory. The metrics highlight substantial increases in active wallets, returning user engagement, and daily transaction volumes. This comprehensive view of network health indicates strong organic growth and user retention. As Sei continues to evolve, we'll be expanding these metrics to include more detailed analytics about DeFi activity, smart contract interactions, and cross-chain movements.",
+        date: "2024-11-27",
+        content: "Our latest network activity dashboard showcases Sei's remarkable growth trajectory. The metrics highlight substantial increases in active wallets, returning user engagement, and daily transaction volumes. This comprehensive view of network health indicates strong organic growth and user retention. As Sei continues to evolve, we'll be expanding these metrics to include more detailed analytics about DeFi activity, smart contract interactions, and cross-chain movements. <a href='https://flipsidecrypto.xyz/studio/dashboards/2eabf741-641e-4fe3-8b85-ddc1433818c0?beta' target='_blank' rel='noopener noreferrer' class='discord-link'>Come check out the dashboard here!</a>",
         image: require('@/assets/ww1.png'),
         type: 'image'
       },
       {
         title: "Memecoin Madness Trading Metrics",
-        date: "2024-03-20",
-        content: "Since the launch of Memecoin Madness this week, we've seen unprecedented trading activity across Sei-based meme tokens. This dashboard tracks the explosive growth in trade volume, number of unique traders, and transaction frequency. The data reveals how the Sei ecosystem is rapidly becoming a hub for community-driven token trading. We'll continue monitoring these metrics as the meme economy expands on Sei.",
+        date: "2024-11-27",
+        content: "Since the launch of Memecoin Madness this week, we've seen unprecedented trading activity across Sei-based meme tokens. This dashboard tracks the explosive growth in trade volume, number of unique traders, and transaction frequency. The data reveals how the Sei ecosystem is rapidly becoming a hub for community-driven token trading. We'll continue monitoring these metrics as the meme economy expands on Sei. <a href='https://flipsidecrypto.xyz/studio/dashboards/352d49af-b37d-4071-90cf-4eac588c5968?beta' target='_blank' rel='noopener noreferrer' class='discord-link'>Come check out the dashboard here!</a>",
         image: require('@/assets/ww2.png'),
         type: 'image'
       }
-    ]
+    ])
+
+    const startGBAnimation = () => {
+      gbDirection.value = (gbDirection.value + 1) % 4
+    }
 
     const goBack = () => {
       router.push('/')
     }
 
+    onMounted(() => {
+      isReady.value = true
+      startGBAnimation()
+      const gb = document.querySelector('.floating-gb')
+      if (gb) {
+        gb.addEventListener('animationend', startGBAnimation)
+      }
+    })
+
     return {
+      isReady,
+      gbDirection,
       blogPosts,
+      startGBAnimation,
       goBack
     }
   }
@@ -263,5 +297,17 @@ html {
   to {
     transform: translate(-100px, 100vh) rotate(720deg);
   }
+}
+
+.discord-link {
+  color: #9999ff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.discord-link:hover {
+  color: #ff9c00;
+  text-decoration: underline;
 }
 </style> 
