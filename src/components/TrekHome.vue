@@ -191,6 +191,7 @@ export default {
   animation: textColorRotate 30s ease-in-out infinite;
   text-shadow: 0 0 20px currentColor;
   opacity: 0.9;
+  margin-top: 100px;
 }
 
 @keyframes textColorRotate {
@@ -229,127 +230,111 @@ export default {
 
 .box {
   position: fixed;
-  width: 300px;
-  height: 300px;
-  background: rgba(0, 255, 255, 0.2);
-  border: 2px solid cyan;
+  width: 200px;
+  height: 80px;
+  background: #ff9c00;
+  border: none;
+  border-radius: 40px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  color: cyan;
+  color: black;
   font-family: 'Antonio', sans-serif;
-  font-size: 2.5em;
+  font-size: 1.8em;
   opacity: 0;
   cursor: pointer;
   pointer-events: auto;
   z-index: 5;
+  padding-right: 30px;
+  transition: all 0.3s ease;
+  top: -100px;
 }
 
 .box:hover {
-  color: gold;
-  border-color: gold;
-  background: rgba(255, 215, 0, 0.2);
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-  z-index: 15;
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 156, 0, 0.3);
+}
+
+.box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  background: inherit;
+  border-radius: 40px 0 0 40px;
+  opacity: 0.7;
 }
 
 .box-left {
-  left: -350px;
-  top: calc(50% - 350px);
-  animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
+  background: #ff9c00;
+  left: calc(20% - 100px);
+  animation: slideInFromTop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
 }
 
 .box-right {
-  right: -350px;
-  top: calc(50% + 50px);
-  animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
+  background: #cc99cc;
+  left: calc(40% - 100px);
+  animation: slideInFromTop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
 }
 
 .box-top {
-  top: -350px;
-  left: calc(50% + 50px);
-  animation: slideInTop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
+  background: #9999ff;
+  left: calc(60% - 100px);
+  animation: slideInFromTop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
 }
 
 .box-bottom {
-  bottom: -350px;
-  left: calc(50% - 350px);
-  animation: slideInBottom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
+  background: #ff9966;
+  left: calc(80% - 100px);
+  animation: slideInFromTop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
 }
 
-@keyframes slideInLeft {
-  from {
-    transform: translateX(0) rotate(-180deg);
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(0);
     opacity: 0;
   }
-  to {
-    transform: translate3d(calc(25vw + 50px), 0, 0) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(0) rotate(180deg);
-    opacity: 0;
-  }
-  to {
-    transform: translate3d(calc(-25vw - 50px), 0, 0) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInTop {
-  from {
-    transform: translateY(0) rotate(-180deg);
-    opacity: 0;
-  }
-  to {
-    transform: translate3d(0, calc(25vh + 50px), 0) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInBottom {
-  from {
-    transform: translateY(0) rotate(180deg);
-    opacity: 0;
-  }
-  to {
-    transform: translate3d(0, calc(-25vh - 50px), 0) rotate(0deg);
+  100% {
+    transform: translateY(150px);
     opacity: 1;
   }
 }
 
 .quick-menu {
   position: fixed;
-  right: -300px;
-  /* Position it at the same height as the Quick Menu box */
-  top: 120px; /* Aligns with the Quick Menu box */
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid cyan;
+  top: 200px;
+  left: calc(60% - 80px);
+  background: #9999ff;
+  border-radius: 0 0 40px 40px;
   padding: 20px;
   transition: all 0.3s ease;
   z-index: 25;
   opacity: 0;
-  transform: translateX(50px);
+  transform: translateY(-20px);
+  width: 160px;
 }
 
 .menu-active {
-  right: calc(350px); /* Positions it next to the Quick Menu box */
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 .menu-item {
-  color: cyan;
+  color: black;
   font-family: 'Antonio', sans-serif;
-  font-size: 24px; /* Increased font size */
-  margin: 20px 0; /* Increased spacing between items */
+  font-size: 24px;
+  margin: 20px 0;
   cursor: pointer;
-  transition: color 0.3s ease;
-  opacity: 0;
-  transform: translateX(50px);
+  transition: all 0.3s ease;
+  text-align: right;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
 }
 
 .menu-active .menu-item {
@@ -369,82 +354,98 @@ export default {
   transition: all 0.3s ease 0.3s;
 }
 
-.menu-item:hover {
-  color: gold;
-}
-
 .nft-gallery {
   position: fixed;
-  right: -300px;
-  bottom: 50px; /* Adjusted to align better */
-  display: flex;
-  gap: 20px;
+  top: 200px;
+  left: calc(40% - 80px);
+  background: #cc99cc;
+  border-radius: 0 0 40px 40px;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid cyan;
   transition: all 0.3s ease;
   z-index: 25;
   opacity: 0;
-  transform: translateX(50px);
+  transform: translateY(-20px);
+  width: 160px;
 }
 
 .gallery-active {
-  right: calc(130px); /* Position next to NFT box */
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 .nft-item {
-  width: 150px;
-  height: 150px;
-  border: 2px solid cyan;
+  width: 120px;
+  height: 120px;
+  border: none;
   overflow: hidden;
-  background: rgba(0, 255, 255, 0.1); /* Added to see container */
+  background: #cc99cc; /* LCARS purple */
+  border-radius: 20px;
+  position: relative;
+  padding: 5px;
+  margin: 10px auto;
+}
+
+.nft-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background: inherit;
+  opacity: 0.7;
+  border-radius: 20px 0 0 20px;
 }
 
 .nft-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block; /* Added to fix potential spacing issues */
-}
-
-.nft-item:hover {
-  border-color: gold;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-  transform: scale(1.05);
+  display: block;
+  border-radius: 15px;
 }
 
 .warp-gallery {
   position: fixed;
-  left: calc(250px); /* Align with $WARP box */
-  bottom: -450px; /* Start below screen */
-  display: flex;
-  flex-direction: column; /* Stack vertically */
-  gap: 20px;
+  top: 200px;
+  left: calc(80% - 80px);
+  background: #ff9966;
+  border-radius: 0 0 40px 40px;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid cyan;
   transition: all 0.3s ease;
   z-index: 25;
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(-20px);
+  width: 160px;
 }
 
 .warp-active {
-  bottom: 50px; /* Position above $WARP box */
   opacity: 1;
   transform: translateY(0);
 }
 
 .warp-item {
-  width: 150px;
-  height: 150px;
-  border: 2px solid cyan;
+  width: 120px;
+  height: 120px;
+  border: none;
   overflow: hidden;
-  background: rgba(0, 255, 255, 0.1);
-  opacity: 0;
-  transform: translateY(50px);
+  background: #ff9966; /* LCARS salmon */
+  border-radius: 20px;
+  position: relative;
+  padding: 5px;
+  margin: 10px auto;
+}
+
+.warp-item::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background: inherit;
+  opacity: 0.7;
+  border-radius: 0 20px 20px 0;
 }
 
 .warp-item img {
@@ -452,6 +453,7 @@ export default {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 15px;
 }
 
 .warp-active .warp-item {
@@ -468,13 +470,13 @@ export default {
 }
 
 .warp-item:hover {
-  border-color: gold;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
   transform: scale(1.05);
+  filter: brightness(1.2);
+  box-shadow: 0 0 30px rgba(153, 153, 255, 0.3);
 }
 
 .nft-item, .warp-item {
-  position: relative; /* Ensure this is added to existing styles */
+  position: relative;
 }
 
 .tooltip {
@@ -482,48 +484,45 @@ export default {
   top: -40px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  color: cyan;
-  padding: 8px 12px;
-  border-radius: 4px;
+  background: #ff9c00; /* LCARS orange */
+  color: black;
+  padding: 8px 20px;
+  border-radius: 20px;
   font-size: 14px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s ease;
-  border: 1px solid cyan;
+  border: none;
   font-family: 'Antonio', sans-serif;
   z-index: 100;
 }
 
-.tooltip::after {
+.tooltip::before {
   content: '';
   position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid cyan;
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 20px;
+  background: inherit;
+  border-radius: 10px 0 0 10px;
+  opacity: 0.7;
 }
 
 .nft-item:hover .tooltip,
 .warp-item:hover .tooltip {
   opacity: 1;
   top: -45px;
+  background: #9999ff; /* LCARS blue on hover */
 }
 
-.nft-item:hover .tooltip,
-.warp-item:hover .tooltip {
-  border-color: gold;
-  color: gold;
-}
-
-.nft-item:hover .tooltip::after,
-.warp-item:hover .tooltip::after {
-  border-top-color: gold;
+.nft-item:hover,
+.warp-item:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+  box-shadow: 0 0 30px rgba(153, 153, 255, 0.3);
 }
 
 .box-fly-away {
@@ -536,53 +535,22 @@ export default {
 
 @keyframes boxFlyAway {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translateY(150px);
     opacity: 1;
   }
   100% {
-    transform: translate(100vw, 100vh) scale(0);
+    transform: translateY(-100vh);
     opacity: 0;
   }
 }
 
 @keyframes discoverFlyAway {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translateY(150px);
     opacity: 1;
   }
   100% {
-    transform: translate(-100vw, 100vh) scale(0);
-    opacity: 0;
-  }
-}
-
-/* Add specific animations for each box position */
-.box-top.box-fly-away {
-  animation: topBoxFlyAway 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-}
-
-.box-bottom.box-fly-away {
-  animation: bottomBoxFlyAway 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-}
-
-@keyframes topBoxFlyAway {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(0, -100vh) scale(0);
-    opacity: 0;
-  }
-}
-
-@keyframes bottomBoxFlyAway {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(0, 100vh) scale(0);
+    transform: translateY(-100vh);
     opacity: 0;
   }
 }
