@@ -101,6 +101,15 @@
       <div class="menu-item" @click="goToAboutTrek">About Trek</div>
       <div class="menu-item" @click="goToWarpWednesdays">Warp Wednesdays</div>
     </div>
+
+    <!-- Warbird formation -->
+    <div class="warbird-formation">
+      <div v-for="i in 4" :key="i" 
+           :class="`warbird-container warbird-${i}`">
+        <div class="warbird-trail"></div>
+        <img :src="require('@/assets/rw1.png')" alt="Romulan Warbird" class="warbird">
+      </div>
+    </div>
   </div>
   <div class="social-links">
     <a href="https://twitter.com/web3trek" target="_blank" rel="noopener noreferrer" class="social-button">
@@ -134,6 +143,7 @@
 <script>
 import voyagerImage from '@/assets/vgr1.png'
 import voyagerImage2 from '@/assets/vgr2.png'
+import warbirdImage from '@/assets/rw1.png'
 
 export default {
   name: 'TrekHome',
@@ -152,7 +162,8 @@ export default {
       animationInterval: null,
       stars: [],
       voyagerImage,
-      voyagerImage2
+      voyagerImage2,
+      warbirdImage
     }
   },
   methods: {
@@ -977,6 +988,78 @@ export default {
   }
   to {
     transform: translate(-200px, calc(70vh + 100px)) rotate(15deg);
+  }
+}
+
+.warbird-formation {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Below UI elements */
+  pointer-events: none;
+}
+
+.warbird {
+  width: 40px;
+  height: auto;
+  opacity: 0.9;
+  z-index: 3;
+  transform: rotate(55deg);
+}
+
+.warbird-container {
+  position: absolute;
+  animation: warbirdFlight 20s linear infinite;
+}
+
+/* Adjusted to line formation with 4 ships */
+.warbird-1 { 
+  animation-delay: 0s;
+  transform: translate(0, 0); /* Lead ship */
+}
+.warbird-2 { 
+  animation-delay: 0.5s;
+  transform: translate(-30px, 30px); /* Second ship */
+}
+.warbird-3 { 
+  animation-delay: 1s;
+  transform: translate(-60px, 60px); /* Third ship */
+}
+.warbird-4 { 
+  animation-delay: 1.5s;
+  transform: translate(-90px, 90px); /* Fourth ship */
+}
+
+.warbird-trail {
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 255, 0, 0),
+    rgb(251, 255, 1),
+    rgba(251, 255, 1, 0.925)
+  );
+  filter: blur(2px);
+  transform: translate(14px, 24px) rotate(-95deg);
+  box-shadow: 
+    0 0 8px rgba(0, 255, 0, 0.5),
+    0 0 15px rgba(0, 255, 0, 0.3);
+  z-index: 2;
+}
+
+@keyframes warbirdFlight {
+  0% {
+    transform: translate(calc(100vw + 100px), calc(100vh + 100px)) 
+               rotate(-55deg) scale(1);
+  }
+  50% {
+    transform: translate(calc(50vw - 100px), calc(50vh - 100px)) 
+               rotate(-55deg) scale(1.1);
+  }
+  100% {
+    transform: translate(-200px, -200px) 
+               rotate(-55deg) scale(1);
   }
 }
 </style>
