@@ -10,6 +10,17 @@
                class="blog-post">
             <h3>{{ post.title }}</h3>
             <div class="post-date">{{ post.date }}</div>
+            <div class="dashboard-media">
+              <video v-if="post.type === 'video'" 
+                     controls 
+                     class="dashboard-video">
+                <source :src="post.video" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <img v-else 
+                   :src="post.image" 
+                   :alt="post.title">
+            </div>
             <div class="post-content">{{ post.content }}</div>
           </div>
         </div>
@@ -33,11 +44,33 @@ export default {
     
     const blogPosts = [
       {
-        title: "Launch of Warp Wednesdays",
+        title: "Announcing Warp Wednesdays!",
         date: "2024-03-20",
-        content: "Welcome to our first Warp Wednesday! Each week, we'll be sharing updates, insights, and developments from the Trek ecosystem."
+        content: "We're thrilled to announce a new chapter in our journey as the Warp Bois Discord evolves into the TREK Discord! Starting today, every Wednesday we'll be bringing you comprehensive updates on everything happening in our ecosystem. Warp Wednesdays will feature the latest TREK news, exciting community competitions, detailed Sei network analysis, NFT market insights, meme coin trends, and much more. Join us weekly as we explore the frontiers of the Sei ecosystem and build our community together. This is just the beginning of our mission to create the most engaging and informative platform for all things Sei!",
+        image: require('@/assets/warpw1.jpeg'),
+        type: 'image'
       },
-      // Add more blog posts here
+      {
+        title: "Tanker Bot Returns to Discord",
+        date: "2024-03-20",
+        content: "We're excited to announce that Tanker has returned to Discord with enhanced capabilities! Our beloved bot now tracks coin prices and NFT market data in real-time. Simply tag Tanker in your Discord server to access market analytics, price alerts, and trading volumes. Stay tuned for upcoming features including customizable alerts, trading pair analytics, and advanced NFT floor price tracking. Tanker is evolving to become your all-in-one Discord companion for the Sei ecosystem.",
+        video: require('@/assets/tankerback.mp4'),
+        type: 'video'
+      },
+      {
+        title: "Sei Network Growth Dashboard",
+        date: "2024-03-20",
+        content: "Our latest network activity dashboard showcases Sei's remarkable growth trajectory. The metrics highlight substantial increases in active wallets, returning user engagement, and daily transaction volumes. This comprehensive view of network health indicates strong organic growth and user retention. As Sei continues to evolve, we'll be expanding these metrics to include more detailed analytics about DeFi activity, smart contract interactions, and cross-chain movements.",
+        image: require('@/assets/ww1.png'),
+        type: 'image'
+      },
+      {
+        title: "Memecoin Madness Trading Metrics",
+        date: "2024-03-20",
+        content: "Since the launch of Memecoin Madness this week, we've seen unprecedented trading activity across Sei-based meme tokens. This dashboard tracks the explosive growth in trade volume, number of unique traders, and transaction frequency. The data reveals how the Sei ecosystem is rapidly becoming a hub for community-driven token trading. We'll continue monitoring these metrics as the meme economy expands on Sei.",
+        image: require('@/assets/ww2.png'),
+        type: 'image'
+      }
     ]
 
     const goBack = () => {
@@ -55,19 +88,25 @@ export default {
 <style scoped>
 .warp-wednesdays-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: transparent;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  padding-bottom: 50px;
+  pointer-events: auto;
+}
+
+.content-container {
+  padding-top: 120px;
 }
 
 .section {
   position: relative;
   width: 80%;
   max-width: 800px;
-  margin: 100px auto;
+  margin: 0 auto;
   padding: 40px;
-  background: #ff9c00; /* LCARS orange */
+  background: #ff9c00;
   border-radius: 40px;
 }
 
@@ -87,6 +126,12 @@ export default {
   padding: 20px;
   border-radius: 20px;
   color: white;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.blog-post:hover {
+  transform: translateY(-5px);
 }
 
 .blog-post h3 {
@@ -143,5 +188,39 @@ export default {
 .back-button:hover {
   filter: brightness(1.2);
   transform: scale(1.05);
+}
+
+.dashboard-media {
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  position: relative;
+}
+
+.dashboard-video {
+  width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 156, 0, 0.3);
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.dashboard-media img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 156, 0, 0.3);
+  object-fit: contain;
+  max-height: 500px;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 </style> 
