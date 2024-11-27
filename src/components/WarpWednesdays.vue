@@ -11,7 +11,7 @@
       </div>
       
       <!-- Back button -->
-      <div class="back-button" @click="goBack">
+      <div class="back-button" :class="{ 'back-button-small': isScrolled }" @click="goBack">
         &lt; Back to Home
       </div>
       
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -55,10 +55,11 @@ export default {
     const router = useRouter()
     const isReady = ref(false)
     const gbDirection = ref(0)
+    const isScrolled = ref(false)
     const blogPosts = ref([
       {
         title: "Announcing Warp Wednesdays!",
-        date: "2024-11-7",
+        date: "2024-11-27",
         content: "We're thrilled to announce a new chapter in our journey as the Warp Bois Discord evolves into the TREK Discord! Starting today, every Wednesday we'll be bringing you comprehensive updates on everything happening in our ecosystem. Warp Wednesdays will feature the latest TREK news, exciting community competitions, detailed Sei network analysis, NFT market insights, meme coin trends, and much more. Join us weekly as we explore the frontiers of the Sei ecosystem and build our community together. This is just the beginning of our mission to create the most engaging and informative platform for all things Sei!",
         image: require('@/assets/warpw1.jpeg'),
         type: 'image'
@@ -87,7 +88,7 @@ export default {
       {
         title: "Sei Network Growth Dashboard",
         date: "2024-11-27",
-        content: "Our latest network activity dashboard showcases Sei's remarkable growth trajectory. The metrics highlight substantial increases in active wallets, returning user engagement, and daily transaction volumes. This comprehensive view of network health indicates strong organic growth and user retention. As Sei continues to evolve, we'll be expanding these metrics to include more detailed analytics about DeFi activity, smart contract interactions, and cross-chain movements. <a href='https://flipsidecrypto.xyz/studio/dashboards/2eabf741-641e-4fe3-8b85-ddc1433818c0?beta' target='_blank' rel='noopener noreferrer' class='discord-link'>Come check out the dashboard here!</a>",
+        content: `Our latest network activity dashboard showcases Sei's remarkable growth trajectory. The metrics highlight substantial increases in active wallets, returning user engagement, and daily transaction volumes. This comprehensive view of network health indicates strong organic growth and user retention. As Sei continues to evolve, we'll be expanding these metrics to include more detailed analytics about DeFi activity, smart contract interactions, and cross-chain movements. <a href='https://flipsidecrypto.xyz/studio/dashboards/2eabf741-641e-4fe3-8b85-ddc1433818c0?beta' target='_blank' rel='noopener noreferrer' style='color: #00ffff !important; text-decoration: none; font-weight: bold;'>Come check out the dashboard here!</a>`,
         image: require('@/assets/ww1.png'),
         type: 'image'
       },
@@ -108,6 +109,10 @@ export default {
       router.push('/')
     }
 
+    const handleScroll = () => {
+      isScrolled.value = window.scrollY > 50
+    }
+
     onMounted(() => {
       isReady.value = true
       startGBAnimation()
@@ -115,6 +120,11 @@ export default {
       if (gb) {
         gb.addEventListener('animationend', startGBAnimation)
       }
+      window.addEventListener('scroll', handleScroll)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
     })
 
     return {
@@ -122,13 +132,14 @@ export default {
       gbDirection,
       blogPosts,
       startGBAnimation,
-      goBack
+      goBack,
+      isScrolled
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
 .warp-wednesdays-container {
   width: 100%;
   min-height: 100vh;
@@ -209,12 +220,17 @@ export default {
   color: black;
   font-size: 1.2em;
   cursor: pointer;
-  transition: all 0.3s ease;
   z-index: 10;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   padding-right: 30px;
+  transition: all 0.3s ease;
+}
+
+.back-button-small {
+  transform: scale(0.5);
+  transform-origin: top left;
 }
 
 .back-button::before {
@@ -300,14 +316,72 @@ html {
 }
 
 .discord-link {
-  color: #9999ff;
+  color: #00ffff !important;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
 .discord-link:hover {
-  color: #ff9c00;
+  color: #ff9c00 !important;
   text-decoration: underline;
+  text-shadow: 0 0 5px rgba(255, 156, 0, 0.5);
+}
+
+.discord-link:visited {
+  color: #ff00ff !important;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.post-content a {
+  color: #00ffff !important;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.post-content a:hover {
+  color: #ff9c00 !important;
+  text-decoration: underline;
+}
+
+.post-content a:visited {
+  color: #ff00ff !important;
+}
+
+/* Remove scoped to allow styles to affect dynamic content */
+.warp-wednesdays-container .post-content a,
+.warp-wednesdays-container .discord-link {
+  color: #00ffff !important;
+  text-decoration: none !important;
+  font-weight: bold !important;
+  transition: color 0.3s ease !important;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+.warp-wednesdays-container .post-content a:hover,
+.warp-wednesdays-container .discord-link:hover {
+  color: #ff9c00 !important;
+  text-decoration: underline !important;
+}
+
+.warp-wednesdays-container .post-content a:visited,
+.warp-wednesdays-container .discord-link:visited {
+  color: #ff00ff !important;
+}
+
+/* Add a global style for these specific links */
+:deep(a[href*="flipsidecrypto.xyz"]),
+:deep(a[href*="discord.gg"]) {
+  color: #00ffff !important;
+  text-decoration: none !important;
+  font-weight: bold !important;
+}
+
+:deep(a[href*="flipsidecrypto.xyz"]:visited),
+:deep(a[href*="discord.gg"]:visited) {
+  color: #ff00ff !important;
 }
 </style> 

@@ -428,7 +428,7 @@ export default {
 
 .quick-menu {
   position: fixed;
-  top: 200px;
+  top: 140px;
   left: calc(60% - 80px);
   background: #9999ff;
   border-radius: 0 0 40px 40px;
@@ -481,7 +481,7 @@ export default {
 
 .nft-gallery {
   position: fixed;
-  top: 200px;
+  top: 150px;
   left: calc(40% - 80px);
   background: #cc99cc;
   border-radius: 0 0 40px 40px;
@@ -534,7 +534,7 @@ export default {
 
 .warp-gallery {
   position: fixed;
-  top: 200px;
+  top: 150px;
   left: calc(80% - 80px);
   background: #ff9966;
   border-radius: 0 0 40px 40px;
@@ -684,7 +684,7 @@ export default {
 
 .discover-menu {
   position: fixed;
-  top: 200px;
+  top: 150px;
   left: calc(20% - 80px);
   width: 160px;
   background: #ff9c00;
