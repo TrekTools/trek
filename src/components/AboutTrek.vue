@@ -131,10 +131,10 @@ export default {
   visibility: hidden;
   transform: translateY(20px);
   transition: all 0.5s ease;
-  padding: 30px;
-  background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-  border: 2px solid cyan;
-  border-radius: 10px;
+  padding: 40px;
+  background: #9999ff; /* LCARS blue */
+  border: none;
+  border-radius: 40px;
 }
 
 .section.active {
@@ -164,12 +164,13 @@ export default {
 }
 
 .dot-label {
-  color: cyan;
-  font-size: 0.8em;
+  color: #9999ff; /* LCARS blue */
+  font-size: 1em;
   opacity: 0;
   transition: opacity 0.3s ease;
   white-space: nowrap;
   margin-right: 20px;
+  font-family: 'Antonio', sans-serif;
 }
 
 .dot-container:hover .dot-label {
@@ -179,50 +180,54 @@ export default {
 .dot {
   width: 12px;
   height: 12px;
-  border: 2px solid cyan;
-  background: transparent;
+  background: #ff9966; /* LCARS salmon */
+  border: none;
   border-radius: 50%;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .dot-container:hover .dot {
-  border-color: gold;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  background: #ff9c00; /* LCARS orange */
   transform: scale(1.2);
 }
 
 .dot.active {
-  background: cyan;
+  background: #cc99cc; /* LCARS purple */
   transform: scale(1.2);
 }
 
 .section h2 {
-  color: cyan;
+  color: black; /* LCARS uses dark text on light backgrounds */
   font-family: 'Antonio', sans-serif;
   font-size: 2.5em;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: right; /* LCARS often right-aligns text */
   text-transform: uppercase;
   letter-spacing: 2px;
+  padding-right: 20px;
 }
 
 .section-content {
-  background: transparent;
-  color: #fff;
+  background: inherit;
+  color: black;
   font-family: 'Antonio', sans-serif;
   font-size: 1.2em;
   line-height: 1.8;
   white-space: pre-wrap;
   text-align: left;
-  padding: 20px;
+  padding: 30px;
+  border-radius: 20px;
+  margin-top: 20px;
+  position: relative;
 }
 
-.section-content {
-  position: relative;
-  padding: 20px;
-  background: rgba(0, 255, 255, 0.05);
-  border-radius: 5px;
+.section-content ul {
+  color: black;
+}
+
+.section-content a {
+  color: black;
+  text-decoration: underline;
 }
 
 .section:hover {
@@ -235,20 +240,70 @@ export default {
   position: fixed;
   top: 30px;
   left: 30px;
-  padding: 15px 30px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid cyan;
-  color: cyan;
+  width: 200px;
+  height: 80px;
+  background: #ff9c00; /* LCARS orange */
+  border: none;
+  border-radius: 40px;
+  color: black;
   font-size: 1.2em;
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
-  border-radius: 5px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 30px;
+}
+
+.back-button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  background: inherit;
+  border-radius: 40px 0 0 40px;
+  opacity: 0.7;
 }
 
 .back-button:hover {
-  color: gold;
-  border-color: gold;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  filter: brightness(1.2);
+  transform: scale(1.05);
+}
+
+/* Section color variations */
+.section:nth-child(1) { 
+  background: #ff9c00; /* Orange */
+  .section-content {
+    background: #ff9c00;
+  }
+} 
+
+.section:nth-child(2) { 
+  background: #cc99cc; /* Purple */
+  .section-content {
+    background: #cc99cc;
+  }
+}
+
+.section:nth-child(3) { 
+  background: #9999ff; /* Blue */
+  .section-content {
+    background: #9999ff;
+  }
+}
+
+.section:nth-child(4) { 
+  background: #ff9966; /* Salmon */
+  .section-content {
+    background: #ff9966;
+  }
+}
+
+.section:hover {
+  filter: brightness(1.05);
+  transform: translateY(-5px);
 }
 </style> 

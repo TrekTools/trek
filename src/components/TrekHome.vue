@@ -17,7 +17,7 @@
     <!-- Boxes first in DOM order -->
     <div class="boxes-container">
       <div class="box box-left" 
-           @click="goToAboutTrek"
+           @click="toggleDiscover"
            :class="{ 'discover-fly-away': isLeaving }">
         Discover
       </div>
@@ -90,10 +90,8 @@
 
     <!-- New Discover Menu -->
     <div class="new-discover-menu" :class="{ 'menu-slide-in': discoverOpen }">
-      <div class="menu-item">WHAT IS TREK</div>
-      <div class="menu-item">TOKENOMICS</div>
-      <div class="menu-item">ROADMAP</div>
-      <div class="menu-item">TEAM</div>
+      <div class="menu-item" @click="goToAboutTrek">About Trek</div>
+      <div class="menu-item" @click="goToWarpWednesdays">Warp Wednesdays</div>
     </div>
 
     <!-- New Back Button -->
@@ -108,6 +106,12 @@
       <h2>Welcome to Trek</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
       <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+
+    <!-- Discover dropdown menu -->
+    <div class="discover-menu" :class="{ 'menu-active': discoverOpen }">
+      <div class="menu-item" @click="goToAboutTrek">About Trek</div>
+      <div class="menu-item" @click="goToWarpWednesdays">Warp Wednesdays</div>
     </div>
   </div>
   <div class="social-links">
@@ -125,48 +129,65 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
-
 export default {
   name: 'TrekHome',
-  setup() {
-    const router = useRouter()
-    
-    const goToAboutTrek = () => {
-      router.push('/about-trek')
-    }
-
-    return {
-      goToAboutTrek
-    }
-  },
   data() {
     return {
+      discoverOpen: false,
       menuOpen: false,
       nftOpen: false,
       warpOpen: false,
-      discoverOpen: false,
       isLeaving: false
     }
   },
   methods: {
-    toggleMenu() {
-      this.menuOpen = !this.menuOpen
+    toggleDiscover() {
+      this.discoverOpen = !this.discoverOpen;
+      // Close other menus
+      this.menuOpen = false;
+      this.nftOpen = false;
+      this.warpOpen = false;
     },
     toggleNFTs() {
-      this.nftOpen = !this.nftOpen
+      this.nftOpen = !this.nftOpen;
+      // Close other menus
+      this.menuOpen = false;
+      this.discoverOpen = false;
+      this.warpOpen = false;
+    },
+    toggleMenu() {
+      this.menuOpen = !this.menuOpen;
+      // Close other menus
+      this.discoverOpen = false;
+      this.nftOpen = false;
+      this.warpOpen = false;
     },
     toggleWarp() {
-      this.warpOpen = !this.warpOpen
+      this.warpOpen = !this.warpOpen;
+      // Close other menus
+      this.menuOpen = false;
+      this.discoverOpen = false;
+      this.nftOpen = false;
     },
-    handleImageError(e) {
-      console.error('Image failed to load:', e.target.src)
+    goToAboutTrek() {
+      this.isLeaving = true;
+      this.discoverOpen = false; // Close menu before navigating
+      setTimeout(() => {
+        this.$router.push('/about-trek');
+      }, 500);
+    },
+    goToWarpWednesdays() {
+      this.isLeaving = true;
+      this.discoverOpen = false; // Close menu before navigating
+      setTimeout(() => {
+        this.$router.push('/warp-wednesdays');
+      }, 500);
     },
     openLink(url) {
-      window.open(url, '_blank', 'noopener,noreferrer')
+      window.open(url, '_blank');
     },
-    handleBoxClick() {
-      this.isLeaving = true;
+    handleImageError(event) {
+      event.target.src = '@/assets/placeholder.png';
     }
   }
 }
@@ -327,11 +348,13 @@ export default {
   opacity: 0;
   transform: translateY(-20px);
   width: 160px;
+  pointer-events: none; /* Disable interactions when closed */
 }
 
 .menu-active {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto; /* Enable interactions when open */
 }
 
 .menu-item {
@@ -378,11 +401,13 @@ export default {
   opacity: 0;
   transform: translateY(-20px);
   width: 160px;
+  pointer-events: none; /* Disable interactions when closed */
 }
 
 .gallery-active {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto; /* Enable interactions when open */
 }
 
 .nft-item {
@@ -747,5 +772,55 @@ export default {
   width: 24px;
   height: 24px;
   color: white; /* Icon color */
+}
+
+/* Discover dropdown menu styling */
+.discover-menu {
+  position: fixed;
+  top: 200px;
+  left: calc(20% - 80px); /* Align with Discover button */
+  width: 160px;
+  background: #ff9c00; /* LCARS orange */
+  border-radius: 0 0 40px 40px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  z-index: 25;
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none; /* Disable interactions when closed */
+}
+
+.menu-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto; /* Enable interactions when open */
+}
+
+.menu-item {
+  color: black;
+  font-family: 'Antonio', sans-serif;
+  font-size: 1.2em;
+  text-align: right;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px 0;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* Animation for leaving state */
+.discover-fly-away {
+  animation: flyAway 0.5s ease forwards;
+}
+
+@keyframes flyAway {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
 }
 </style>
