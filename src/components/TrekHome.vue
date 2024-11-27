@@ -88,26 +88,6 @@
       </div>
     </div>
 
-    <!-- New Discover Menu -->
-    <div class="new-discover-menu" :class="{ 'menu-slide-in': discoverOpen }">
-      <div class="menu-item" @click="goToAboutTrek">About Trek</div>
-      <div class="menu-item" @click="goToWarpWednesdays">Warp Wednesdays</div>
-    </div>
-
-    <!-- New Back Button -->
-    <div class="back-button" 
-         :class="{ 'back-slide-in': discoverOpen }"
-         @click="toggleDiscover">
-      &lt; Back
-    </div>
-
-    <!-- New Content Box -->
-    <div class="discover-content" :class="{ 'content-fade-in': discoverOpen }">
-      <h2>Welcome to Trek</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </div>
-
     <!-- Discover dropdown menu -->
     <div class="discover-menu" :class="{ 'menu-active': discoverOpen }">
       <div class="menu-item" @click="goToAboutTrek">About Trek</div>
@@ -592,150 +572,52 @@ export default {
   }
 }
 
-.new-discover-menu {
+.discover-menu {
   position: fixed;
-  left: -300px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid cyan;
-  color: cyan;
-  padding: 30px;
-  transition: all 0.5s ease 0.8s;
-  opacity: 0;
-  z-index: 30;
-  width: 250px;
-  display: block;
-  visibility: visible;
-}
-
-.menu-slide-in {
-  left: 50px;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-}
-
-.new-discover-menu .menu-item {
-  display: block;
-  color: cyan !important;
-  font-family: 'Antonio', sans-serif;
-  font-size: 28px;
-  margin: 25px 0;
-  cursor: pointer;
-  background: transparent;
-  transition: color 0.3s ease;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-align: center;
-  white-space: nowrap;
-  position: relative;
-  z-index: 31;
-}
-
-.new-discover-menu .menu-item:hover {
-  color: gold;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-  transform: scale(1.05);
-}
-
-.discover-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid cyan;
-  padding: 30px;
-  color: cyan;
-  font-family: 'Antonio', sans-serif;
-  opacity: 0;
-  transition: all 0.5s ease;
-  z-index: 25;
-}
-
-.content-fade-in {
-  opacity: 1;
-  transition-delay: 1.1s;
-}
-
-.discover-content h2 {
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: cyan;
-}
-
-.discover-content p {
-  margin-bottom: 15px;
-  line-height: 1.5;
-  color: cyan;
-}
-
-.back-button {
-  position: fixed;
-  right: -300px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid cyan;
+  top: 200px;
+  left: calc(20% - 80px);
+  width: 160px;
+  background: #ff9c00;
+  border-radius: 0 0 40px 40px;
   padding: 20px;
-  width: 200px;
-  color: cyan;
-  font-family: 'Antonio', sans-serif;
-  font-size: 1.5em;
-  cursor: pointer;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
+  z-index: 25;
   opacity: 0;
-  z-index: 30;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  transform: translateY(-20px);
+  pointer-events: none;
 }
 
-.back-slide-in {
-  right: 50px;
+.menu-active {
   opacity: 1;
-  transition-delay: 0.6s;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
-.back-button:hover {
-  color: gold;
-  border-color: gold;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+.menu-item {
+  color: black;
+  font-family: 'Antonio', sans-serif;
+  font-size: 1.2em;
+  text-align: right;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px 0;
 }
 
-/* Add new star styles */
-.stars-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
+.menu-item:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
 }
 
-.star {
-  position: absolute;
-  background: cyan;
-  border-radius: 50%;
-  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
-  animation: twinkle linear infinite;
+/* Animation for leaving state */
+.discover-fly-away {
+  animation: flyAway 0.5s ease forwards;
 }
 
-@keyframes twinkle {
-  0% {
-    opacity: 0.2;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 0.2;
-    transform: scale(0.8);
+@keyframes flyAway {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
   }
 }
 
@@ -771,56 +653,6 @@ export default {
 .social-icon {
   width: 24px;
   height: 24px;
-  color: white; /* Icon color */
-}
-
-/* Discover dropdown menu styling */
-.discover-menu {
-  position: fixed;
-  top: 200px;
-  left: calc(20% - 80px); /* Align with Discover button */
-  width: 160px;
-  background: #ff9c00; /* LCARS orange */
-  border-radius: 0 0 40px 40px;
-  padding: 20px;
-  transition: all 0.3s ease;
-  z-index: 25;
-  opacity: 0;
-  transform: translateY(-20px);
-  pointer-events: none; /* Disable interactions when closed */
-}
-
-.menu-active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto; /* Enable interactions when open */
-}
-
-.menu-item {
-  color: black;
-  font-family: 'Antonio', sans-serif;
-  font-size: 1.2em;
-  text-align: right;
-  padding: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 5px 0;
-}
-
-.menu-item:hover {
-  transform: scale(1.05);
-  filter: brightness(1.2);
-}
-
-/* Animation for leaving state */
-.discover-fly-away {
-  animation: flyAway 0.5s ease forwards;
-}
-
-@keyframes flyAway {
-  to {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
+  color: white;
 }
 </style>
