@@ -15,7 +15,7 @@
     <!-- Boxes first in DOM order -->
     <div class="boxes-container">
       <div class="box box-left" 
-           @click="handleBoxClick"
+           @click="goToAboutTrek"
            :class="{ 'discover-fly-away': isLeaving }">
         Discover
       </div>
@@ -118,12 +118,12 @@ export default {
   setup() {
     const router = useRouter()
     
-    const goToAbout = () => {
-      router.push('/about')
+    const goToAboutTrek = () => {
+      router.push('/about-trek')
     }
 
     return {
-      goToAbout
+      goToAboutTrek
     }
   },
   data() {
@@ -217,37 +217,39 @@ export default {
 
 .lines-container {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
 }
 
 .line {
   position: absolute;
   width: 1px;
-  height: 100%;
-  left: 50%;
+  height: 200vh;
+  left: 48%;
+  top: -48%;
   opacity: 0.2;
-  transform-origin: 50% 50%;
+  transform-origin: center;
   animation: 
-    moveLine 3s infinite,
+    moveLine 4s infinite,
     lineColorRotate 30s ease-in-out infinite;
   box-shadow: 0 0 20px currentColor;
 }
 
 @keyframes moveLine {
   0% {
-    transform-origin: 50% 50%;
-    scale: 1;
+    transform-origin: center;
+    scale: 2;
     opacity: 0;
   }
   50% {
     opacity: 0.2;
   }
   100% {
-    transform-origin: 50% 50%;
+    transform-origin: center;
     scale: 0;
     opacity: 0;
   }
@@ -255,25 +257,25 @@ export default {
 
 @keyframes lineColorRotate {
   0% {
-    color: rgb(8, 193, 226);
+    background-color: rgb(8, 193, 226);
   }
   16% {
-    color: rgba(128, 0, 128, 1);
+    background-color: rgba(128, 0, 128, 1);
   }
   33% {
-    color: rgb(230, 200, 35);
+    background-color: rgb(230, 200, 35);
   }
   50% {
-    color: rgba(255, 0, 0, 1);
+    background-color: rgba(255, 0, 0, 1);
   }
   66% {
-    color: rgb(230, 200, 35);
+    background-color: rgb(230, 200, 35);
   }
   84% {
-    color: rgba(128, 0, 128, 1);
+    background-color: rgba(128, 0, 128, 1);
   }
   100% {
-    color: rgb(8, 193, 226);
+    background-color: rgb(8, 193, 226);
   }
 }
 
@@ -299,12 +301,7 @@ export default {
   color: cyan;
   font-family: 'Antonio', sans-serif;
   font-size: 2.5em;
-  animation: 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
   opacity: 0;
-  transition: color 0.3s ease, 
-              border-color 0.3s ease, 
-              background-color 0.3s ease,
-              box-shadow 0.3s ease;
   cursor: pointer;
   pointer-events: auto;
   z-index: 5;
@@ -321,28 +318,28 @@ export default {
 .box-left {
   left: -350px;
   top: calc(50% - 350px);
-  animation-name: flyInLeft;
+  animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
 }
 
 .box-right {
   right: -350px;
   top: calc(50% + 50px);
-  animation-name: flyInRight;
+  animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
 }
 
 .box-top {
   top: -350px;
   left: calc(50% + 50px);
-  animation-name: flyInTop;
+  animation: slideInTop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
 }
 
 .box-bottom {
   bottom: -350px;
   left: calc(50% - 350px);
-  animation-name: flyInBottom;
+  animation: slideInBottom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards;
 }
 
-@keyframes flyInLeft {
+@keyframes slideInLeft {
   from {
     transform: translateX(0) rotate(-180deg);
     opacity: 0;
@@ -353,7 +350,7 @@ export default {
   }
 }
 
-@keyframes flyInRight {
+@keyframes slideInRight {
   from {
     transform: translateX(0) rotate(180deg);
     opacity: 0;
@@ -364,7 +361,7 @@ export default {
   }
 }
 
-@keyframes flyInTop {
+@keyframes slideInTop {
   from {
     transform: translateY(0) rotate(-180deg);
     opacity: 0;
@@ -375,7 +372,7 @@ export default {
   }
 }
 
-@keyframes flyInBottom {
+@keyframes slideInBottom {
   from {
     transform: translateY(0) rotate(180deg);
     opacity: 0;
@@ -592,23 +589,63 @@ export default {
 }
 
 .box-fly-away {
-  animation: flyAway 0.5s forwards !important;
+  animation: boxFlyAway 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
 }
 
-@keyframes flyAway {
-  to {
-    transform: translate(100vw, -100vh) rotate(45deg);
+.discover-fly-away {
+  animation: discoverFlyAway 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+@keyframes boxFlyAway {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100vw, 100vh) scale(0);
     opacity: 0;
   }
 }
 
-.discover-active {
-  animation: moveToTop 0.5s 0.5s forwards !important;
+@keyframes discoverFlyAway {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100vw, 100vh) scale(0);
+    opacity: 0;
+  }
 }
 
-@keyframes moveToTop {
-  to {
-    transform: translate(calc(-50vw + 150px), -40vh) !important;
+/* Add specific animations for each box position */
+.box-top.box-fly-away {
+  animation: topBoxFlyAway 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+.box-bottom.box-fly-away {
+  animation: bottomBoxFlyAway 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+@keyframes topBoxFlyAway {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, -100vh) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes bottomBoxFlyAway {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 100vh) scale(0);
+    opacity: 0;
   }
 }
 
@@ -724,16 +761,5 @@ export default {
   color: gold;
   border-color: gold;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-}
-
-.discover-fly-away {
-  animation: discoverFlyAway 0.5s forwards !important;
-}
-
-@keyframes discoverFlyAway {
-  to {
-    transform: translate(-100vw, -100vh) rotate(-45deg);
-    opacity: 0;
-  }
 }
 </style>
