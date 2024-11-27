@@ -932,7 +932,7 @@ export default {
     rgba(70, 180, 255, 0.9)
   );
   filter: blur(3px);
-  transform: translate(20px, -66px) rotate(15deg);
+  transform: translate(40px, -76px) rotate(25deg);
   box-shadow: 
     0 0 10px rgba(0, 149, 255, 0.5),
     0 0 20px rgba(0, 149, 255, 0.3);
@@ -940,10 +940,10 @@ export default {
 
 @keyframes voyagerFlight {
   from {
-    transform: translate(-100px, -100px) rotate(15deg);
+    transform: translate(-100px, 200px) rotate(15deg);
   }
   to {
-    transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(15deg);
+    transform: translate(calc(100vw + 100px), calc(100vh + 200px)) rotate(15deg);
   }
 }
 
@@ -1036,15 +1036,15 @@ export default {
   height: 2px;
   background: linear-gradient(
     to right,
-    rgba(0, 255, 0, 0),
+    rgba(100, 255, 0, 0),
     rgb(251, 255, 1),
-    rgba(251, 255, 1, 0.925)
+    rgba(255, 123, 0, 0.925)
   );
   filter: blur(2px);
   transform: translate(14px, 24px) rotate(-95deg);
   box-shadow: 
-    0 0 8px rgba(0, 255, 0, 0.5),
-    0 0 15px rgba(0, 255, 0, 0.3);
+    0 0 8px rgba(251, 255, 0, 1),
+    0 0 15px rgba(251, 255, 0, 0.9);
   z-index: 2;
 }
 
