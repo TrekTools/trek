@@ -1,18 +1,26 @@
 <template>
   <div class="background-container">
     <div class="stars-container">
-      <!-- Create multiple stars -->
-      <div v-for="n in 200" :key="n" 
+      <div v-for="star in stars" :key="star.id" 
            class="star"
-           :style="{ 
-             left: `${Math.random() * 100}%`,
-             top: `${Math.random() * 100}%`,
-             animationDelay: `${Math.random() * 3}s`,
-             width: `${1 + Math.random() * 2}px`,
-             height: `${1 + Math.random() * 2}px`,
-             animationDuration: `${1 + Math.random() * 3}s`
+           :class="star.size"
+           :style="{
+             left: star.left,
+             top: star.top,
+             animationDelay: star.delay
            }">
       </div>
+    </div>
+    <div class="voyager-container">
+      <div class="trail-container">
+        <div class="voyager-trail"></div>
+      </div>
+      <img :src="voyagerImage" alt="Voyager" class="voyager">
+      
+      <div class="trail-container-2">
+        <div class="voyager-trail-2"></div>
+      </div>
+      <img :src="voyagerImage2" alt="Voyager 2" class="voyager-2">
     </div>
     <!-- Boxes first in DOM order -->
     <div class="boxes-container">
@@ -106,9 +114,27 @@
       </svg>
     </a>
   </div>
+  <div class="lcars-footer">
+    <div class="lcars-corner"></div>
+    <div class="lcars-text-container">
+      <div class="lcars-title">TREK.TOOLS</div>
+      <div class="lcars-id">02-262000</div>
+    </div>
+    <div class="lcars-data">
+      <div class="data-row" v-for="row in 3" :key="row">
+        <span v-for="col in 10" :key="col" 
+              :class="{ 'number-blink': shouldBlink(row, col) }">
+          {{ getRandomNumber(row, col) }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import voyagerImage from '@/assets/vgr1.png'
+import voyagerImage2 from '@/assets/vgr2.png'
+
 export default {
   name: 'TrekHome',
   data() {
@@ -117,7 +143,16 @@ export default {
       menuOpen: false,
       nftOpen: false,
       warpOpen: false,
-      isLeaving: false
+      isLeaving: false,
+      baseNumbers: [
+        [101, 7109, 1966, 36, 880, 1701, 2364, 74656, 47634, 98454],
+        [102, 6102, 1987, 44, 51, 1864, 4523, 85647, 36454, 12654],
+        [103, 714, 1993, 954, 4.4, 2893, 7453, 96534, 25654, 76543]
+      ],
+      animationInterval: null,
+      stars: [],
+      voyagerImage,
+      voyagerImage2
     }
   },
   methods: {
@@ -168,7 +203,70 @@ export default {
     },
     handleImageError(event) {
       event.target.src = '@/assets/placeholder.png';
+    },
+    getRandomNumber(row, col) {
+      return Math.random() < 0.4 ? Math.floor(Math.random() * 9999) : this.baseNumbers[row-1][col-1]
+    },
+    shouldBlink(row, col) {
+      return Math.random() < 0.4 && Date.now() % (row * col * 500) < 250
+    },
+    getStarClass() {
+      // Distribute star sizes with more small stars
+      return Math.random() < 0.7 ? 'small' : 
+             Math.random() < 0.9 ? 'medium' : 'large'
+    },
+    getStarStyle() {
+      return {
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        animationDelay: `-${Math.random() * 3000}s` // Very long random delay
+      }
+    },
+    createStars() {
+      const starContainer = this.$refs.starsContainer
+      if (!starContainer) return
+      
+      const numberOfStars = 100
+      
+      for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div')
+        star.className = 'star'
+        
+        // Random size class
+        const sizeClass = Math.random() < 0.7 ? 'small' : 
+                         Math.random() < 0.9 ? 'medium' : 'large'
+        star.classList.add(sizeClass)
+        
+        // Position
+        star.style.left = `${Math.random() * 100}%`
+        star.style.top = `${Math.random() * 100}%`
+        
+        // Random animation delay
+        star.style.animationDelay = `${Math.random() * 3000}s`
+        
+        starContainer.appendChild(star)
+      }
     }
+  },
+  created() {
+    this.animationInterval = setInterval(() => {
+      this.$forceUpdate()
+    }, 50)
+    this.stars = Array.from({ length: 200 }, (_, i) => ({
+      id: i,
+      size: Math.random() < 0.7 ? 'small' : Math.random() < 0.9 ? 'medium' : 'large',
+      left: `${50 + (Math.random() - 0.5) * 100}%`,
+      top: `${50 + (Math.random() - 0.5) * 100}%`,
+      delay: `-${Math.random() * 400}s`
+    }))
+  },
+  beforeUnmount() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval)
+    }
+  },
+  mounted() {
+    this.createStars()
   }
 }
 </script>
@@ -239,6 +337,7 @@ export default {
   height: 100%;
   pointer-events: none;
   z-index: 10;
+  padding-bottom: 150px; /* Add space for the footer */
 }
 
 .box {
@@ -254,7 +353,7 @@ export default {
   color: black;
   font-family: 'Antonio', sans-serif;
   font-size: 1.8em;
-  opacity: 0;
+  opacity: 0.9;
   cursor: pointer;
   pointer-events: auto;
   z-index: 5;
@@ -654,5 +753,230 @@ export default {
   width: 24px;
   height: 24px;
   color: white;
+}
+
+.lcars-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  z-index: 100;
+}
+
+.lcars-corner {
+  width: 120px;
+  height: 120px;
+  background: #cc99cc; /* LCARS purple */
+  border-radius: 0 120px 0 0;
+}
+
+.lcars-text-container {
+  background: #cc99cc;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+.lcars-title {
+  font-family: 'Antonio', sans-serif;
+  font-size: 1.5em;
+  color: black;
+  text-transform: uppercase;
+}
+
+.lcars-id {
+  font-family: 'Antonio', sans-serif;
+  font-size: 1.2em;
+  color: black;
+}
+
+.lcars-data {
+  background: black;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-family: 'Antonio', sans-serif;
+  color: #ff9c00; /* LCARS orange */
+}
+
+.data-row {
+  display: flex;
+  gap: 20px;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.data-row span {
+  min-width: 40px;
+  text-align: right;
+  transition: color 0.3s ease;
+}
+
+/* Animation for blinking numbers */
+.number-blink {
+  animation: numberChange 0.5s ease;
+  color: #ff3333;
+}
+
+@keyframes numberChange {
+  0% {
+    color: #ff9c00;
+  }
+  50% {
+    color: #ff3333;
+  }
+  100% {
+    color: #ff9c00;
+  }
+}
+
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: starTwinkle 4s ease-in-out infinite, 
+             starDrift 400s linear infinite;
+}
+
+.star.small {
+  width: 1px;
+  height: 1px;
+  animation: starTwinkle 4s ease-in-out infinite,
+             starDrift 250s linear infinite;
+}
+
+.star.medium {
+  width: 2px;
+  height: 2px;
+  animation: starTwinkle 4s ease-in-out infinite,
+             starDrift 200s linear infinite;
+}
+
+.star.large {
+  width: 3px;
+  height: 3px;
+  animation: starTwinkle 4s ease-in-out infinite,
+             starDrift 150s linear infinite;
+}
+
+@keyframes starTwinkle {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.2; }
+}
+
+@keyframes starDrift {
+  from {
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+.voyager-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.voyager {
+  position: absolute;
+  width: 100px;
+  height: auto;
+  opacity: 0.9;
+  animation: voyagerFlight 60s linear infinite;
+  z-index: 3;
+}
+
+.trail-container {
+  position: absolute;
+  left: -200px; /* Move trail container left */
+  z-index: 2;
+  animation: voyagerFlight 60s linear infinite;
+}
+
+.voyager-trail {
+  position: absolute;
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 149, 255, 0),
+    rgba(0, 149, 255, 0.8),
+    rgba(70, 180, 255, 0.9)
+  );
+  filter: blur(3px);
+  transform: translate(20px, -66px) rotate(15deg);
+  box-shadow: 
+    0 0 10px rgba(0, 149, 255, 0.5),
+    0 0 20px rgba(0, 149, 255, 0.3);
+}
+
+@keyframes voyagerFlight {
+  from {
+    transform: translate(-100px, -100px) rotate(15deg);
+  }
+  to {
+    transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(15deg);
+  }
+}
+
+.voyager-2 {
+  position: absolute;
+  width: 100px;
+  height: auto;
+  opacity: 0.9;
+  animation: voyagerFlight2 60s linear infinite;
+  z-index: 3;
+  transform: scaleX(-1); /* Flip horizontally */
+}
+
+.voyager-trail-2 {
+  position: absolute;
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),        /* Changed to red with 0 opacity */
+    rgba(255, 30, 0, 0.8),     /* Bright red */
+    rgba(255, 60, 0, 0.9)      /* Slightly lighter red */
+  );
+  filter: blur(3px);
+  transform: translate(225px, -70px) rotate(155deg);
+  box-shadow: 
+    0 0 10px rgba(255, 0, 0, 0.5),    /* Red glow */
+    0 0 20px rgba(255, 0, 0, 0.3);     /* Red outer glow */
+}
+
+.trail-container-2 {
+  position: absolute;
+  left: -200px;
+  z-index: 2;
+  animation: voyagerFlight2 60s linear infinite;
+  transform: scaleX(-1); /* Flip horizontally */
+}
+
+@keyframes voyagerFlight2 {
+  from {
+    transform: translate(calc(100vw + 100px), calc(30vh - 100px)) rotate(15deg);
+  }
+  to {
+    transform: translate(-200px, calc(70vh + 100px)) rotate(15deg);
+  }
 }
 </style>
